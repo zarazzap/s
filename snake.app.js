@@ -15,8 +15,8 @@ const restartBtn = document.querySelector('#restart');
 const pauseBtn = document.querySelector('#pause');
 const controlsEl = document.querySelector('#controls');
 
-const GRID_SIZE = 20;
-const CELL = 20;
+const GRID_SIZE = 14;
+const CELL = 32;
 const TICK_MS = 120;
 
 canvas.width = GRID_SIZE * CELL;
