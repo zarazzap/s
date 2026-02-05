@@ -43,10 +43,10 @@ let seed = Date.now() % 100000;
 let rng = createRng(seed);
 let state = createInitialState({ gridSize: GRID_SIZE, seed, obstacleSpawnEvery: 18, maxObstacles: 6 });
 
-const headImg = new Image();
+let headImg = new Image();
 headImg.src = `./download.png?v=${ASSET_VERSION}`;
 
-const obstacleImg = new Image();
+let obstacleImg = new Image();
 obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
 
 const foodImg = new Image();
@@ -179,15 +179,19 @@ function beginGame() {
 }
 
 chooseMatveyBtn.addEventListener('click', () => {
-  headImg.src = `./download.png?v=${ASSET_VERSION}`;
-  obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
+  headImg = new Image();
+  headImg.src = `./download.png?v=${ASSET_VERSION}&t=${Date.now()}`;
+  obstacleImg = new Image();
+  obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   headImg.onload = render;
   beginGame();
 });
 
 chooseDenBtn.addEventListener('click', () => {
-  headImg.src = `./download-1.png?v=${ASSET_VERSION}`;
-  obstacleImg.src = `./download.png?v=${ASSET_VERSION}`;
+  headImg = new Image();
+  headImg.src = `./download-1.png?v=${ASSET_VERSION}&t=${Date.now()}`;
+  obstacleImg = new Image();
+  obstacleImg.src = `./download.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   headImg.onload = render;
   beginGame();
 });
