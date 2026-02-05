@@ -20,12 +20,14 @@ const chooseDenBtn = document.querySelector('#choose-den');
 
 const GRID_SIZE = 14;
 let CELL = 32;
-const ASSET_VERSION = '2026-02-05-1';
+const ASSET_VERSION = '2026-02-05-2';
 const TICK_MS = 120;
 
 function resizeCanvas() {
   const parentWidth = canvas.parentElement ? canvas.parentElement.clientWidth : GRID_SIZE * CELL;
-  const nextCell = Math.max(18, Math.floor(parentWidth / GRID_SIZE));
+  const maxBoardWidth = 560;
+  const targetWidth = Math.min(parentWidth, maxBoardWidth);
+  const nextCell = Math.max(18, Math.floor(targetWidth / GRID_SIZE));
   CELL = nextCell;
   canvas.width = GRID_SIZE * CELL;
   canvas.height = GRID_SIZE * CELL;
@@ -120,6 +122,7 @@ function tick() {
 
 let interval = setInterval(tick, TICK_MS);
 let started = false;
+document.body.classList.add('not-started');
 
 function restart() {
   seed = (seed + 1) % 100000;
@@ -170,16 +173,19 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
 
 function beginGame() {
   started = true;
+  document.body.classList.remove('not-started');
   startScreen.style.display = 'none';
   render();
 }
 
 chooseMatveyBtn.addEventListener('click', () => {
+  headImg.src = `./download.png?v=${ASSET_VERSION}`;
   obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
   beginGame();
 });
 
 chooseDenBtn.addEventListener('click', () => {
+  headImg.src = `./download-1.png?v=${ASSET_VERSION}`;
   obstacleImg.src = `./download.png?v=${ASSET_VERSION}`;
   beginGame();
 });
