@@ -16,24 +16,36 @@ const pauseBtn = document.querySelector('#pause');
 const controlsEl = document.querySelector('#controls');
 
 const GRID_SIZE = 14;
-const CELL = 32;
+let CELL = 32;
+const ASSET_VERSION = '2026-02-05-1';
 const TICK_MS = 120;
 
-canvas.width = GRID_SIZE * CELL;
-canvas.height = GRID_SIZE * CELL;
+function resizeCanvas() {
+  const parentWidth = canvas.parentElement ? canvas.parentElement.clientWidth : GRID_SIZE * CELL;
+  const nextCell = Math.max(18, Math.floor(parentWidth / GRID_SIZE));
+  CELL = nextCell;
+  canvas.width = GRID_SIZE * CELL;
+  canvas.height = GRID_SIZE * CELL;
+}
+
+resizeCanvas();
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  render();
+});
 
 let seed = Date.now() % 100000;
 let rng = createRng(seed);
 let state = createInitialState({ gridSize: GRID_SIZE, seed, obstacleSpawnEvery: 18, maxObstacles: 6 });
 
 const headImg = new Image();
-headImg.src = './download.png';
+headImg.src = `./download.png?v=${ASSET_VERSION}`;
 
 const obstacleImg = new Image();
-obstacleImg.src = './download-1.png';
+obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
 
 const foodImg = new Image();
-foodImg.src = './food.png';
+foodImg.src = `./food.png?v=${ASSET_VERSION}`;
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
