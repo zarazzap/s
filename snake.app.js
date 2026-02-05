@@ -32,6 +32,9 @@ headImg.src = './download.png';
 const obstacleImg = new Image();
 obstacleImg.src = './download-1.png';
 
+const foodImg = new Image();
+foodImg.src = './food.png';
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -55,8 +58,12 @@ function render() {
   const food = state.food || { x: 0, y: 0 };
 
   // Food
-  ctx.fillStyle = '#d64545';
-  ctx.fillRect(food.x * CELL, food.y * CELL, CELL, CELL);
+  if (foodImg.complete && foodImg.naturalWidth > 0) {
+    ctx.drawImage(foodImg, food.x * CELL, food.y * CELL, CELL, CELL);
+  } else {
+    ctx.fillStyle = '#d64545';
+    ctx.fillRect(food.x * CELL, food.y * CELL, CELL, CELL);
+  }
 
   // Obstacles
   state.obstacles.forEach((o) => {
@@ -144,4 +151,5 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
 
 headImg.onload = render;
 obstacleImg.onload = render;
+foodImg.onload = render;
 render();
