@@ -20,12 +20,12 @@ const chooseDenBtn = document.querySelector('#choose-den');
 
 const GRID_SIZE = 14;
 let CELL = 32;
-const ASSET_VERSION = '2026-02-05-2';
+const ASSET_VERSION = '2026-02-05-3';
 const TICK_MS = 120;
 
 function resizeCanvas() {
   const parentWidth = canvas.parentElement ? canvas.parentElement.clientWidth : GRID_SIZE * CELL;
-  const maxBoardWidth = 560;
+  const maxBoardWidth = Math.floor(window.innerWidth * 0.5);
   const targetWidth = Math.min(parentWidth, maxBoardWidth);
   const nextCell = Math.max(18, Math.floor(targetWidth / GRID_SIZE));
   CELL = nextCell;
@@ -181,12 +181,14 @@ function beginGame() {
 chooseMatveyBtn.addEventListener('click', () => {
   headImg.src = `./download.png?v=${ASSET_VERSION}`;
   obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
+  headImg.onload = render;
   beginGame();
 });
 
 chooseDenBtn.addEventListener('click', () => {
   headImg.src = `./download-1.png?v=${ASSET_VERSION}`;
   obstacleImg.src = `./download.png?v=${ASSET_VERSION}`;
+  headImg.onload = render;
   beginGame();
 });
 
