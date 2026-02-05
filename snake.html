@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Snake</title>
+    <link rel="stylesheet" href="./snake.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Classic Snake</h1>
+        <div id="scoreboard">Score: <span id="score">0</span></div>
+      </header>
+
+      <canvas id="game" aria-label="Snake game"></canvas>
+      <div id="status">Playing</div>
+
+      <div id="actions">
+        <button id="restart">Restart (R)</button>
+        <button id="pause">Pause (Space)</button>
+      </div>
+
+      <div id="controls" aria-label="On-screen controls">
+        <div class="grid">
+          <span class="spacer"></span>
+          <button data-action="up">↑</button>
+          <span class="spacer"></span>
+          <button data-action="left">←</button>
+          <button data-action="down">↓</button>
+          <button data-action="right">→</button>
+          <span class="spacer"></span>
+          <span class="spacer"></span>
+          <span class="spacer"></span>
+        </div>
+      </div>
+
+      <div class="footer">Use arrow keys or WASD. Avoid walls, yourself, and obstacles.</div>
+    </main>
+
+    <script type="module" src="./snake.app.js"></script>
+  </body>
+</html>

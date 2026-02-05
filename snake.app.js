@@ -1,0 +1,145 @@
+import {
+  createInitialState,
+  setDirection,
+  step,
+  togglePause,
+  reset,
+  createRng,
+} from './snake.logic.js';
+
+const canvas = document.querySelector('#game');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.querySelector('#score');
+const statusEl = document.querySelector('#status');
+const restartBtn = document.querySelector('#restart');
+const pauseBtn = document.querySelector('#pause');
+const controlsEl = document.querySelector('#controls');
+
+const GRID_SIZE = 20;
+const CELL = 20;
+const TICK_MS = 120;
+
+canvas.width = GRID_SIZE * CELL;
+canvas.height = GRID_SIZE * CELL;
+
+let seed = Date.now() % 100000;
+let rng = createRng(seed);
+let state = createInitialState({ gridSize: GRID_SIZE, seed, obstacleSpawnEvery: 18, maxObstacles: 6 });
+
+const headImg = new Image();
+headImg.src = './download.png';
+
+const obstacleImg = new Image();
+obstacleImg.src = './download-1.png';
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background grid
+  ctx.fillStyle = '#f7f7f7';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#e6e6e6';
+  for (let x = 0; x <= GRID_SIZE; x += 1) {
+    ctx.beginPath();
+    ctx.moveTo(x * CELL, 0);
+    ctx.lineTo(x * CELL, canvas.height);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= GRID_SIZE; y += 1) {
+    ctx.beginPath();
+    ctx.moveTo(0, y * CELL);
+    ctx.lineTo(canvas.width, y * CELL);
+    ctx.stroke();
+  }
+
+  // Food
+  ctx.fillStyle = '#d64545';
+  ctx.fillRect(state.food.x * CELL, state.food.y * CELL, CELL, CELL);
+
+  // Obstacles
+  state.obstacles.forEach((o) => {
+    if (obstacleImg.complete && obstacleImg.naturalWidth > 0) {
+      ctx.drawImage(obstacleImg, o.x * CELL, o.y * CELL, CELL, CELL);
+    } else {
+      ctx.fillStyle = '#8a8a8a';
+      ctx.fillRect(o.x * CELL, o.y * CELL, CELL, CELL);
+    }
+  });
+
+  // Snake
+  ctx.fillStyle = '#2f2f2f';
+  state.snake.forEach((s, i) => {
+    if (i === 0 && headImg.complete && headImg.naturalWidth > 0) {
+      ctx.drawImage(headImg, s.x * CELL, s.y * CELL, CELL, CELL);
+    } else {
+      const inset = i === 0 ? 2 : 3;
+      ctx.fillRect(s.x * CELL + inset, s.y * CELL + inset, CELL - inset * 2, CELL - inset * 2);
+    }
+  });
+
+  scoreEl.textContent = String(state.score);
+
+  if (state.gameOver) {
+    statusEl.textContent = 'Game Over — press R to restart';
+  } else if (state.paused) {
+    statusEl.textContent = 'Paused — press Space to resume';
+  } else {
+    statusEl.textContent = 'Playing';
+  }
+}
+
+function tick() {
+  state = step(state, rng);
+  render();
+}
+
+let interval = setInterval(tick, TICK_MS);
+
+function restart() {
+  seed = (seed + 1) % 100000;
+  rng = createRng(seed);
+  state = reset(state, seed);
+  render();
+}
+
+function toggle() {
+  state = togglePause(state);
+  render();
+}
+
+function handleDir(dir) {
+  state = setDirection(state, dir);
+  render();
+}
+
+window.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key === 'arrowup' || key === 'w') handleDir({ x: 0, y: -1 });
+  if (key === 'arrowdown' || key === 's') handleDir({ x: 0, y: 1 });
+  if (key === 'arrowleft' || key === 'a') handleDir({ x: -1, y: 0 });
+  if (key === 'arrowright' || key === 'd') handleDir({ x: 1, y: 0 });
+  if (key === ' ') toggle();
+  if (key === 'r') restart();
+});
+
+restartBtn.addEventListener('click', restart);
+pauseBtn.addEventListener('click', toggle);
+
+controlsEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  if (action === 'up') handleDir({ x: 0, y: -1 });
+  if (action === 'down') handleDir({ x: 0, y: 1 });
+  if (action === 'left') handleDir({ x: -1, y: 0 });
+  if (action === 'right') handleDir({ x: 1, y: 0 });
+});
+
+// Show on-screen controls on touch devices
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  controlsEl.classList.add('visible');
+}
+
+headImg.onload = render;
+obstacleImg.onload = render;
+render();

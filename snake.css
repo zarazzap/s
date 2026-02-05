@@ -1,0 +1,108 @@
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --muted: #666666;
+  --panel: #f2f2f2;
+  --border: #d9d9d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: var(--bg);
+  color: var(--text);
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+#scoreboard {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+#game {
+  display: block;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+}
+
+#status {
+  margin: 12px 0 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+#actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+#controls {
+  display: none;
+  gap: 8px;
+  align-items: center;
+}
+
+#controls.visible {
+  display: flex;
+}
+
+#controls .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(3, 44px);
+  gap: 6px;
+}
+
+#controls button {
+  width: 44px;
+  height: 44px;
+}
+
+#controls .spacer {
+  visibility: hidden;
+}
+
+.footer {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
