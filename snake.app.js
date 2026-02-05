@@ -52,9 +52,11 @@ function render() {
     ctx.stroke();
   }
 
+  const food = state.food || { x: 0, y: 0 };
+
   // Food
   ctx.fillStyle = '#d64545';
-  ctx.fillRect(state.food.x * CELL, state.food.y * CELL, CELL, CELL);
+  ctx.fillRect(food.x * CELL, food.y * CELL, CELL, CELL);
 
   // Obstacles
   state.obstacles.forEach((o) => {

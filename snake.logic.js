@@ -57,6 +57,7 @@ export function step(state, rng) {
   const dir = state.nextDir || state.dir;
   const head = state.snake[0];
   const next = { x: head.x + dir.x, y: head.y + dir.y };
+  const currentFood = state.food || placeFood(state.snake, state.obstacles, state.gridSize, rng);
 
   // Boundary collision
   if (next.x < 0 || next.y < 0 || next.x >= state.gridSize || next.y >= state.gridSize) {
@@ -79,11 +80,11 @@ export function step(state, rng) {
     }
   }
 
-  const ateFood = next.x === state.food.x && next.y === state.food.y;
+  const ateFood = next.x === currentFood.x && next.y === currentFood.y;
   const newSnake = [next, ...state.snake];
   if (!ateFood) newSnake.pop();
 
-  const nextFood = ateFood ? placeFood(newSnake, state.obstacles, state.gridSize, rng) : state.food;
+  const nextFood = ateFood ? placeFood(newSnake, state.obstacles, state.gridSize, rng) : currentFood;
   const nextScore = ateFood ? state.score + 1 : state.score;
 
   let nextObstacles = state.obstacles;
@@ -105,9 +106,10 @@ export function step(state, rng) {
 }
 
 export function placeFood(snake, obstacles, gridSize, rng) {
+  const safeObstacles = obstacles || [];
   const occupied = new Set([
     ...snake.map((p) => `${p.x},${p.y}`),
-    ...obstacles.map((p) => `${p.x},${p.y}`),
+    ...safeObstacles.map((p) => `${p.x},${p.y}`),
   ]);
   const open = [];
   for (let y = 0; y < gridSize; y += 1) {
