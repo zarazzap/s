@@ -14,6 +14,9 @@ const statusEl = document.querySelector('#status');
 const restartBtn = document.querySelector('#restart');
 const pauseBtn = document.querySelector('#pause');
 const controlsEl = document.querySelector('#controls');
+const startScreen = document.querySelector('#start-screen');
+const chooseMatveyBtn = document.querySelector('#choose-matvey');
+const chooseDenBtn = document.querySelector('#choose-den');
 
 const GRID_SIZE = 14;
 let CELL = 32;
@@ -110,11 +113,13 @@ function render() {
 }
 
 function tick() {
+  if (!started) return;
   state = step(state, rng);
   render();
 }
 
 let interval = setInterval(tick, TICK_MS);
+let started = false;
 
 function restart() {
   seed = (seed + 1) % 100000;
@@ -134,6 +139,7 @@ function handleDir(dir) {
 }
 
 window.addEventListener('keydown', (e) => {
+  if (!started) return;
   const key = e.key.toLowerCase();
   if (key === 'arrowup' || key === 'w') handleDir({ x: 0, y: -1 });
   if (key === 'arrowdown' || key === 's') handleDir({ x: 0, y: 1 });
@@ -147,6 +153,7 @@ restartBtn.addEventListener('click', restart);
 pauseBtn.addEventListener('click', toggle);
 
 controlsEl.addEventListener('click', (e) => {
+  if (!started) return;
   const btn = e.target.closest('button');
   if (!btn) return;
   const action = btn.dataset.action;
@@ -160,6 +167,22 @@ controlsEl.addEventListener('click', (e) => {
 if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
   controlsEl.classList.add('visible');
 }
+
+function beginGame() {
+  started = true;
+  startScreen.style.display = 'none';
+  render();
+}
+
+chooseMatveyBtn.addEventListener('click', () => {
+  obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
+  beginGame();
+});
+
+chooseDenBtn.addEventListener('click', () => {
+  obstacleImg.src = `./download.png?v=${ASSET_VERSION}`;
+  beginGame();
+});
 
 headImg.onload = render;
 obstacleImg.onload = render;
