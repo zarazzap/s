@@ -20,7 +20,7 @@ const chooseDenBtn = document.querySelector('#choose-den');
 
 const GRID_SIZE = 14;
 let CELL = 32;
-const ASSET_VERSION = '2026-02-05-4';
+const ASSET_VERSION = '2026-02-05-5';
 const TICK_MS = 120;
 
 function resizeCanvas() {
@@ -49,7 +49,7 @@ headImg.src = `./download.png?v=${ASSET_VERSION}`;
 let obstacleImg = new Image();
 obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}`;
 
-const foodImg = new Image();
+let foodImg = new Image();
 foodImg.src = `./food.png?v=${ASSET_VERSION}`;
 
 function render() {
@@ -183,6 +183,8 @@ chooseMatveyBtn.addEventListener('click', () => {
   headImg.src = `./download.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   obstacleImg = new Image();
   obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}&t=${Date.now()}`;
+  foodImg = new Image();
+  foodImg.src = `./food.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   headImg.onload = render;
   beginGame();
 });
@@ -191,7 +193,9 @@ chooseDenBtn.addEventListener('click', () => {
   headImg = new Image();
   headImg.src = `./download-1.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   obstacleImg = new Image();
-  obstacleImg.src = `./download.png?v=${ASSET_VERSION}&t=${Date.now()}`;
+  obstacleImg.src = `./download-1.png?v=${ASSET_VERSION}&t=${Date.now()}`;
+  foodImg = new Image();
+  foodImg.src = `./food-den.png?v=${ASSET_VERSION}&t=${Date.now()}`;
   headImg.onload = render;
   beginGame();
 });
