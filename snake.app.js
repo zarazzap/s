@@ -20,7 +20,7 @@ const chooseDenBtn = document.querySelector('#choose-den');
 
 const GRID_SIZE = 14;
 let CELL = 32;
-const ASSET_VERSION = '2026-02-05-5';
+const ASSET_VERSION = '2026-02-05-6';
 const TICK_MS = 150;
 
 function resizeCanvas() {
