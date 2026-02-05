@@ -55,6 +55,8 @@ foodImg.src = `./food.png?v=${ASSET_VERSION}`;
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  ctx.imageSmoothingEnabled = false;
+
   // Background grid
   ctx.fillStyle = '#f7f7f7';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -76,7 +78,9 @@ function render() {
 
   // Food
   if (foodImg.complete && foodImg.naturalWidth > 0) {
+    ctx.filter = 'contrast(1.2) saturate(1.15)';
     ctx.drawImage(foodImg, food.x * CELL, food.y * CELL, CELL, CELL);
+    ctx.filter = 'none';
   } else {
     ctx.fillStyle = '#d64545';
     ctx.fillRect(food.x * CELL, food.y * CELL, CELL, CELL);
@@ -85,7 +89,9 @@ function render() {
   // Obstacles
   state.obstacles.forEach((o) => {
     if (obstacleImg.complete && obstacleImg.naturalWidth > 0) {
+      ctx.filter = 'contrast(1.2) saturate(1.1)';
       ctx.drawImage(obstacleImg, o.x * CELL, o.y * CELL, CELL, CELL);
+      ctx.filter = 'none';
     } else {
       ctx.fillStyle = '#8a8a8a';
       ctx.fillRect(o.x * CELL, o.y * CELL, CELL, CELL);
@@ -96,7 +102,9 @@ function render() {
   ctx.fillStyle = '#2f2f2f';
   state.snake.forEach((s, i) => {
     if (i === 0 && headImg.complete && headImg.naturalWidth > 0) {
+      ctx.filter = 'contrast(1.2) saturate(1.1)';
       ctx.drawImage(headImg, s.x * CELL, s.y * CELL, CELL, CELL);
+      ctx.filter = 'none';
     } else {
       const inset = i === 0 ? 2 : 3;
       ctx.fillRect(s.x * CELL + inset, s.y * CELL + inset, CELL - inset * 2, CELL - inset * 2);
